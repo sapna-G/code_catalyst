@@ -261,3 +261,22 @@ input:focus {
     font-weight: bold;
     color: var(--primary-color);
 }
+
+
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.summary-table th,
+.summary-table td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+
+.summary-table th {
+    background-color: #f4f4f4;
+}

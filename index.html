@@ -94,44 +94,45 @@
             </div>
         </div>
 
-        <div class="health-guidelines">
-            <h2>Personalized Health Guidelines</h2>
-            <div class="guidelines-form">
-                <h3>Calculate Your Personal Goals</h3>
-                <form id="personalizeForm">
-                    <div class="input-group">
-                        <label for="weight">Weight (kg)</label>
-                        <input type="number" id="weight" required min="30" max="200">
-                    </div>
-                    <div class="input-group">
-                        <label for="height">Height (cm)</label>
-                        <input type="number" id="height" required min="100" max="250">
-                    </div>
-                    <div class="input-group">
-                        <label for="age">Age</label>
-                        <input type="number" id="age" required min="15" max="100">
-                    </div>
-                    <div class="input-group">
-                        <label for="gender">Gender</label>
-                        <select id="gender" required>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
-                        </select>
-                    </div>
-                    <div class="input-group">
-                        <label for="activityLevel">Activity Level</label>
-                        <select id="activityLevel" required>
-                            <option value="sedentary">Sedentary (little or no exercise)</option>
-                            <option value="light">Lightly active (1-3 days/week)</option>
-                            <option value="moderate">Moderately active (3-5 days/week)</option>
-                            <option value="very">Very active (6-7 days/week)</option>
-                            <option value="extra">Extra active (very active + physical job)</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="submit-btn">Calculate My Goals</button>
-                </form>
+        <form id="personalizeForm">
+            <div class="input-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" required min="30" max="200">
             </div>
-
+            <div class="input-group">
+                <label for="height">Height (cm)</label>
+                <input type="number" id="height" required min="100" max="250">
+            </div>
+            <div class="input-group">
+                <label for="age">Age</label>
+                <input type="number" id="age" required min="15" max="100">
+            </div>
+            <div class="input-group">
+                <label for="gender">Gender</label>
+                <select id="gender" required>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="activityLevel">Activity Level</label>
+                <select id="activityLevel" required>
+                    <option value="sedentary">Sedentary (little or no exercise)</option>
+                    <option value="light">Lightly active (1-3 days/week)</option>
+                    <option value="moderate">Moderately active (3-5 days/week)</option>
+                    <option value="very">Very active (6-7 days/week)</option>
+                    <option value="extra">Extra active (very active + physical job)</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label for="sleep">Average Sleep (hours/day)</label>
+                <input type="number" id="sleep" required min="3" max="12">
+            </div>
+            <button type="submit" class="submit-btn">Calculate My Goals</button>
+        </form>
+        
+        <div id="summaryTable"></div>
+        
             <div class="guidelines-cards">
                 <div class="guideline-card" id="waterGuide">
                     <h3>💧 Water Intake</h3>
@@ -178,6 +179,124 @@
         </div>
     </div>
     <script src="innovative-features.js"></script>
+    <script>
+        document.getElementById("personalizeForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+    
+            const weight = parseFloat(document.getElementById("weight").value);
+            const height = parseFloat(document.getElementById("height").value);
+            const age = parseInt(document.getElementById("age").value);
+            const gender = document.getElementById("gender").value;
+            const activity = document.getElementById("activityLevel").value;
+    
+            // BMR Calculation
+            let bmr;
+            if (gender === "male") {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+    
+            // Activity multiplier
+            const activityMultipliers = {
+                sedentary: 1.2,
+                light: 1.375,
+                moderate: 1.55,
+                very: 1.725,
+                extra: 1.9
+            };
+    
+            const dailyCalories = Math.round(bmr * activityMultipliers[activity]);
+            const waterIntake = (weight * 35); // in ml, 35ml per kg
+            const exerciseMinutes = 150; // General weekly recommendation
+    
+            // Show results in respective guideline cards
+            document.querySelector("#waterGuide .recommendation").innerHTML = `
+                Recommended daily intake: <strong>${Math.round(waterIntake)} ml</strong>
+            `;
+    
+            document.querySelector("#calorieGuide .recommendation").innerHTML = `
+                Estimated maintenance calories: <strong>${dailyCalories} kcal/day</strong>
+            `;
+    
+            document.querySelector("#exerciseGuide .recommendation").innerHTML = `
+                Aim for at least <strong>${exerciseMinutes} minutes</strong> of moderate activity per week.
+            `;
+        });
+    </script>
+    
     <script src="app.js"></script>
+
+
+    <script>
+        document.getElementById("personalizeForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+    
+            const weight = parseFloat(document.getElementById("weight").value);
+            const height = parseFloat(document.getElementById("height").value);
+            const age = parseInt(document.getElementById("age").value);
+            const gender = document.getElementById("gender").value;
+            const activity = document.getElementById("activityLevel").value;
+            const sleep = parseFloat(document.getElementById("sleep").value);
+    
+            // BMR Calculation
+            let bmr;
+            if (gender === "male") {
+                bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+            } else {
+                bmr = 10 * weight + 6.25 * height - 5 * age - 161;
+            }
+    
+            const activityMultipliers = {
+                sedentary: 1.2,
+                light: 1.375,
+                moderate: 1.55,
+                very: 1.725,
+                extra: 1.9
+            };
+    
+            const dailyCalories = Math.round(bmr * activityMultipliers[activity]);
+            const waterIntake = Math.round(weight * 35); // ml
+            const exerciseMinutes = 150;
+    
+            // Show in guidelines cards
+            document.querySelector("#waterGuide .recommendation").innerHTML = `
+                Recommended daily intake: <strong>${waterIntake} ml</strong>
+            `;
+    
+            document.querySelector("#calorieGuide .recommendation").innerHTML = `
+                Estimated maintenance calories: <strong>${dailyCalories} kcal/day</strong>
+            `;
+    
+            document.querySelector("#exerciseGuide .recommendation").innerHTML = `
+                Aim for at least <strong>${exerciseMinutes} minutes</strong> of moderate activity per week.
+            `;
+    
+            // Sleep recommendation
+            let sleepAdvice = "";
+            if (sleep < 6) {
+                sleepAdvice = "You're not getting enough sleep. Try to aim for 7–9 hours daily.";
+            } else if (sleep >= 6 && sleep <= 9) {
+                sleepAdvice = "Your sleep duration is within the healthy range!";
+            } else {
+                sleepAdvice = "Oversleeping can lead to fatigue too. Keep it between 7–9 hours.";
+            }
+    
+            // Show summary table
+            document.getElementById("summaryTable").innerHTML = `
+                <h3>Your Personalized Summary</h3>
+                <table class="summary-table">
+                    <tr><th>Metric</th><th>Value</th><th>Healthy Tip</th></tr>
+                    <tr><td>Weight</td><td>${weight} kg</td><td>Maintain a healthy weight through balanced nutrition and regular activity.</td></tr>
+                    <tr><td>Height</td><td>${height} cm</td><td>Used to calculate BMI and calorie needs.</td></tr>
+                    <tr><td>Age</td><td>${age}</td><td>Adjust your goals as your age increases to support metabolism and joint health.</td></tr>
+                    <tr><td>Gender</td><td>${gender}</td><td>Used to tailor your BMR and calorie goals.</td></tr>
+                    <tr><td>Activity Level</td><td>${activity}</td><td>Keep consistent activity; increase gradually if you're sedentary.</td></tr>
+                    <tr><td>Sleep Duration</td><td>${sleep} hrs</td><td>${sleepAdvice}</td></tr>
+                </table>
+            `;
+        });
+    </script>
+    
 </body>
 </html>
