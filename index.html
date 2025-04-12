@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaTrack - Health & Fitness Tracker</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function getDailyQuote() {
+            const quotes = [
+                "Believe you can and you're halfway there.",
+                "It does not matter how slowly you go as long as you do not stop.",
+                "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+                "Don't watch the clock; do what it does. Keep going.",
+                "You miss 100% of the shots you don't take."
+            ];
+            const dailyQuote = document.getElementById("dailyQuote");
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            dailyQuote.innerText = randomQuote;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>VitaTrack</h1>
+            <p class="tagline">Your Journey to Wellness</p>
+            <p id="dailyQuote" class="daily-quote"></p>
+        </header>
+
+        <div class="dashboard">
+            <div class="achievements-section">
+                <div class="streak-card">
+                    <h3>Current Streak</h3>
+                    <div id="streakCount" class="streak-count">0</div>
+                    <p>days</p>
+                </div>
+                <div class="daily-achievements">
+                    <h3>Today's Achievements</h3>
+                    <ul id="achievementsList">
+                        <li class="achievement" id="waterAchievement">🌊 Water Goal</li>
+                        <li class="achievement" id="calorieAchievement">🍎 Calorie Goal</li>
+                        <li class="achievement" id="exerciseAchievement">💪 Exercise Goal</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <h2>Today's Entry</h2>
+                <form id="healthForm">
+                    <div class="input-group">
+                        <label for="water">Water Intake (ml)</label>
+                        <input type="number" id="water" required min="0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="calories">Calories Consumed</label>
+                        <input type="number" id="calories" required min="0">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="exercise">Exercise Duration (minutes)</label>
+                        <input type="number" id="exercise" required min="0">
+                    </div>
+
+                    <button type="submit" class="submit-btn">Track Progress</button>
+                </form>
+            </div>
+
+            <div class="stats-section">
+                <div class="stat-card">
+                    <h3>Water Progress</h3>
+                    <canvas id="waterChart"></canvas>
+                    <p class="goal">Goal: 2000ml</p>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Calorie Tracking</h3>
+                    <canvas id="calorieChart"></canvas>
+                    <p class="goal">Goal: 2000 kcal</p>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Exercise Minutes</h3>
+                    <canvas id="exerciseChart"></canvas>
+                    <p class="goal">Goal: 30 mins</p>
+                </div>
+            </div>
+
+            <div class="weekly-summary">
+                <h2>Weekly Overview</h2>
+                <canvas id="weeklyChart"></canvas>
+            </div>
+        </div>
+
+        <div class="health-guidelines">
+            <h2>Personalized Health Guidelines</h2>
+            <div class="guidelines-form">
+                <h3>Calculate Your Personal Goals</h3>
+                <form id="personalizeForm">
+                    <div class="input-group">
+                        <label for="weight">Weight (kg)</label>
+                        <input type="number" id="weight" required min="30" max="200">
+                    </div>
+                    <div class="input-group">
+                        <label for="height">Height (cm)</label>
+                        <input type="number" id="height" required min="100" max="250">
+                    </div>
+                    <div class="input-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" required min="15" max="100">
+                    </div>
+                    <div class="input-group">
+                        <label for="gender">Gender</label>
+                        <select id="gender" required>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="activityLevel">Activity Level</label>
+                        <select id="activityLevel" required>
+                            <option value="sedentary">Sedentary (little or no exercise)</option>
+                            <option value="light">Lightly active (1-3 days/week)</option>
+                            <option value="moderate">Moderately active (3-5 days/week)</option>
+                            <option value="very">Very active (6-7 days/week)</option>
+                            <option value="extra">Extra active (very active + physical job)</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">Calculate My Goals</button>
+                </form>
+            </div>
+
+            <div class="guidelines-cards">
+                <div class="guideline-card" id="waterGuide">
+                    <h3>💧 Water Intake</h3>
+                    <div class="recommendation"></div>
+                    <div class="tips">
+                        <h4>Tips for Staying Hydrated:</h4>
+                        <ul>
+                            <li>Start your day with a glass of water</li>
+                            <li>Carry a reusable water bottle</li>
+                            <li>Set reminders every 2 hours</li>
+                            <li>Drink before, during, and after exercise</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="guideline-card" id="calorieGuide">
+                    <h3>🔥 Calorie Goals</h3>
+                    <div class="recommendation"></div>
+                    <div class="tips">
+                        <h4>Healthy Eating Tips:</h4>
+                        <ul>
+                            <li>Eat plenty of fruits and vegetables</li>
+                            <li>Choose whole grains over refined grains</li>
+                            <li>Include lean proteins in your diet</li>
+                            <li>Limit processed foods and added sugars</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="guideline-card" id="exerciseGuide">
+                    <h3>💪 Exercise Recommendations</h3>
+                    <div class="recommendation"></div>
+                    <div class="tips">
+                        <h4>Exercise Guidelines:</h4>
+                        <ul>
+                            <li>Aim for 150 minutes of moderate activity per week</li>
+                            <li>Include both cardio and strength training</li>
+                            <li>Take rest days for recovery</li>
+                            <li>Start slowly and gradually increase intensity</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="innovative-features.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
