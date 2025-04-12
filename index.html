@@ -88,11 +88,7 @@
                 </div>
             </div>
 
-            <div class="weekly-summary">
-                <h2>Weekly Overview</h2>
-                <canvas id="weeklyChart"></canvas>
-            </div>
-        </div>
+            
 
         <form id="personalizeForm">
             <div class="input-group">
@@ -114,6 +110,7 @@
                     <option value="female">Female</option>
                 </select>
             </div>
+            
             <div class="input-group">
                 <label for="activityLevel">Activity Level</label>
                 <select id="activityLevel" required>
@@ -298,5 +295,309 @@
         });
     </script>
     
+</body>
+</html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VitaTrack+ | Enhanced Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f8f9fa; margin: 0; padding: 0; }
+    h2 { text-align: center; margin-top: 20px; }
+    .section { max-width: 1000px; margin: 30px auto; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .input-group { margin: 10px 0; }
+    label { display: block; font-weight: bold; margin-bottom: 5px; }
+    input, select, textarea { width: 100%; padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
+    button { padding: 10px 20px; background: #4caf50; color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    .charts, .habit-list, .mood-log, .ai-suggestions, .checklist, .health-tips { display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around; margin-top: 20px; }
+    canvas { max-width: 150px; max-height: 150px; }
+    .habit, .mood, .suggestion, .check-item, .tip-card { background: #e3f2fd; padding: 10px; border-radius: 8px; flex: 1; text-align: center; }
+    #successPopup, #encouragementPopup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #4caf50;
+      color: white;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      font-weight: bold;
+      animation: fadeInOut 4s ease-in-out;
+      display: none;
+      z-index: 1000;
+    }
+    #encouragementPopup { background: #ff9800; }
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateY(-20px); }
+      10% { opacity: 1; transform: translateY(0); }
+      90% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-20px); }
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align:center">VitaTrack+ Enhanced Dashboard</h1>
+
+
+  <div class="section">
+    <h2>🗆️ Daily Habit Tracker</h2>
+    <div class="habit-list">
+      <div class="habit">
+        <input type="checkbox" id="habit1" onchange="saveHabits()"> Drink 2L Water
+        <span class="tip">💧 Stay hydrated to boost energy!</span>
+      </div>
+      <div class="habit">
+        <input type="checkbox" id="habit2" onchange="saveHabits()"> Sleep by 11PM
+        <span class="tip">🛌 Quality sleep improves focus!</span>
+      </div>
+      <div class="habit">
+        <input type="checkbox" id="habit3" onchange="saveHabits()"> 30 Min Exercise
+        <span class="tip">🏋️‍♂️ Move more, feel better!</span>
+      </div>
+      <div class="habit">
+        <input type="checkbox" id="habit4" onchange="saveHabits()"> No Junk Food
+        <span class="tip">🍽️ Choose health over cravings!</span>
+      </div>
+      <div class="habit">
+        <input type="checkbox" id="habit5" onchange="saveHabits()"> Practice Mindfulness
+        <span class="tip">💫 Calm mind, calm life.</span>
+      </div>
+      <div class="habit">
+        <input type="checkbox" id="habit6" onchange="saveHabits()"> Take a Walk Outside
+        <span class="tip">🌳 Nature resets the mind.</span>
+      </div>
+    </div>
+    <div class="habit-actions">
+      <button onclick="resetHabits()">Reset All</button>
+      <button onclick="getHabitSummary()">Get Summary</button>
+    </div>
+  </div>
+  
+  <script>
+  function saveHabits() {
+    for (let i = 1; i <= 6; i++) {
+      localStorage.setItem(`habit${i}`, document.getElementById(`habit${i}`).checked);
+    }
+  }
+  
+  function loadHabits() {
+    for (let i = 1; i <= 6; i++) {
+      document.getElementById(`habit${i}`).checked = localStorage.getItem(`habit${i}`) === 'true';
+    }
+  }
+  
+  function resetHabits() {
+    for (let i = 1; i <= 6; i++) {
+      document.getElementById(`habit${i}`).checked = false;
+      localStorage.removeItem(`habit${i}`);
+    }
+  }
+  
+  function getHabitSummary() {
+    let checked = 0;
+    for (let i = 1; i <= 6; i++) {
+      if (document.getElementById(`habit${i}`).checked) checked++;
+    }
+    const msg = checked >= 5
+      ? "🌟 Amazing job! You're crushing your habits!"
+      : checked >= 3
+      ? "👍 Keep going! You're doing well."
+      : "💡 Let's aim for more tomorrow! You've got this!";
+    alert(msg);
+  }
+  
+  window.onload = loadHabits;
+  </script>
+  
+  <style>
+  .habit-list .habit {
+    margin-bottom: 10px;
+  }
+  .habit-list .tip {
+    display: block;
+    font-size: 0.9em;
+    color: #555;
+    margin-left: 20px;
+    margin-top: 3px;
+  }
+  .habit-actions {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+  }
+  .habit-actions button {
+    padding: 6px 12px;
+    background-color: #6ecf68;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  .habit-actions button:hover {
+    background-color: #56b950;
+  }
+  </style>
+  
+
+  <div class="section">
+    <h2>📝 Mood Journal</h2>
+    <div class="mood-log">
+      <div class="mood">
+        <label>Today's Mood:</label>
+        <select id="moodSelect">
+          <option value="😄">😄 Happy</option>
+          <option value="😐">😐 Neutral</option>
+          <option value="😞">😞 Sad</option>
+          <option value="😠">😠 Angry</option>
+          <option value="🙴">😴 Tired</option>
+        </select>
+      </div>
+      <div class="mood">
+        <label>Notes:</label>
+        <textarea rows="3" placeholder="Describe how you feel..." id="moodNote"></textarea>
+      </div>
+    </div>
+    <button onclick="checkCompletion()">Submit Mood & Check Habits</button>
+  </div>
+
+  <div class="section">
+    <h2>🤖 AI Suggestions</h2>
+    <div class="ai-suggestions">
+      <div class="suggestion">💧 Hydrate better – start your morning with a glass of water!</div>
+      <div class="suggestion">🛌 7-9 hours of sleep fuels your energy & mood.</div>
+      <div class="suggestion">🏃‍♂️ 150 minutes of moderate activity/week recommended.</div>
+      <div class="suggestion">🍎 Whole foods > junk. Add fruits to your meals!</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>📋 Daily Checklist</h2>
+    <div class="checklist">
+      <div class="check-item">
+        📅 Water Intake: <span id="waterCheck">0/2000ml</span>
+        <button onclick="addWater(250)">+250ml</button>
+        <progress id="waterProgress" value="0" max="2000"></progress>
+      </div>
+      <div class="check-item">
+        🍽️ Calories Consumed: <span id="caloriesCheck">0/2000kcal</span>
+        <button onclick="addCalories(100)">+100kcal</button>
+        <progress id="caloriesProgress" value="0" max="2000"></progress>
+      </div>
+      <div class="check-item">
+        🏃‍♂️ Exercise Time: <span id="exerciseCheck">0/30min</span>
+        <button onclick="addExercise(5)">+5min</button>
+        <progress id="exerciseProgress" value="0" max="30"></progress>
+      </div>
+    </div>
+  </div>
+  <script>
+    let water = 0;
+    let calories = 0;
+    let exercise = 0;
+    
+    function addWater(amount) {
+      water = Math.min(water + amount, 2000);
+      document.getElementById('waterCheck').innerText = `${water}/2000ml`;
+      document.getElementById('waterProgress').value = water;
+    }
+    
+    function addCalories(amount) {
+      calories = Math.min(calories + amount, 2000);
+      document.getElementById('caloriesCheck').innerText = `${calories}/2000kcal`;
+      document.getElementById('caloriesProgress').value = calories;
+    }
+    
+    function addExercise(mins) {
+      exercise = Math.min(exercise + mins, 30);
+      document.getElementById('exerciseCheck').innerText = `${exercise}/30min`;
+      document.getElementById('exerciseProgress').value = exercise;
+    }
+    </script>
+    
+
+  <div class="section">
+    <h2>📊 Healthy Suggestions</h2>
+    <div class="health-tips">
+      <div class="tip-card">🧬 Avoid screens 1 hour before bed to improve sleep quality.</div>
+      <div class="tip-card">🌿 Add green veggies to every meal for fiber and vitamins.</div>
+      <div class="tip-card">🌊 Take short walks after meals to improve digestion.</div>
+      <div class="tip-card">🧠 Practice deep breathing to reduce stress and improve focus.</div>
+    </div>
+  </div>
+
+  <div id="successPopup">🎉 Impressive! You nailed today's wellness goals!</div>
+  <div id="encouragementPopup"></div>
+
+  <script>
+    // Save and load localStorage values
+    document.addEventListener('DOMContentLoaded', () => {
+      const moodSelect = document.getElementById('moodSelect');
+      const moodNote = document.getElementById('moodNote');
+
+      // Load saved values
+      moodSelect.value = localStorage.getItem('mood') || '😄';
+      moodNote.value = localStorage.getItem('moodNote') || '';
+      for (let i = 1; i <= 4; i++) {
+        const checkbox = document.getElementById('habit' + i);
+        const saved = localStorage.getItem('habit' + i) === 'true';
+        checkbox.checked = saved;
+        checkbox.addEventListener('change', () => {
+          localStorage.setItem('habit' + i, checkbox.checked);
+        });
+      }
+
+      // Save on change
+      moodSelect.addEventListener('change', () => localStorage.setItem('mood', moodSelect.value));
+      moodNote.addEventListener('input', () => localStorage.setItem('moodNote', moodNote.value));
+    });
+
+    function checkCompletion() {
+      const allChecked = [...document.querySelectorAll('.habit input')].every(box => box.checked);
+      const mood = document.getElementById('moodSelect').value;
+      const popup = document.getElementById('successPopup');
+      const encouragement = document.getElementById('encouragementPopup');
+
+      if (allChecked && mood === '😄') {
+        popup.style.display = 'block';
+        setTimeout(() => popup.style.display = 'none', 4000);
+      } else {
+        let message = '';
+        if (!allChecked) message += 'Try completing all your habits tomorrow! ';
+        if (mood === '😞') message += 'Remember, tough days don’t last. You’re stronger than you feel!';
+        else if (mood === '😠') message += 'Take a deep breath. Let today be a reset moment.';
+        else if (mood === '😴') message += 'Get some rest — your mind and body will thank you.';
+
+        encouragement.innerText = message;
+        encouragement.style.display = 'block';
+        setTimeout(() => encouragement.style.display = 'none', 5000);
+      }
+    }
+
+    const waterChart = new Chart(document.getElementById('waterChart'), {
+      type: 'doughnut', data: { labels: ['Consumed', 'Remaining'], datasets: [{ data: [800, 1200], backgroundColor: ['#4caf50', '#c8e6c9'] }] },
+      options: { plugins: { title: { display: true, text: 'Water Intake' } } }
+    });
+
+    const calorieChart = new Chart(document.getElementById('calorieChart'), {
+      type: 'doughnut', data: { labels: ['Consumed', 'Remaining'], datasets: [{ data: [1400, 600], backgroundColor: ['#ff9800', '#ffe0b2'] }] },
+      options: { plugins: { title: { display: true, text: 'Calorie Intake' } } }
+    });
+
+    const exerciseChart = new Chart(document.getElementById('exerciseChart'), {
+      type: 'doughnut', data: { labels: ['Completed', 'Remaining'], datasets: [{ data: [20, 10], backgroundColor: ['#2196f3', '#bbdefb'] }] },
+      options: { plugins: { title: { display: true, text: 'Exercise Minutes' } } }
+    });
+  </script>
 </body>
 </html>
