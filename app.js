@@ -130,3 +130,30 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+
+
+document.body.appendChild(goalsBox);
+
+snackTableBox.className = "snack-table-box";
+snackTableBox.innerHTML = `
+    <h4>🍽️ Weekly Snack Guide</h4>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Snack Suggestion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>Sunday</td><td>Banana with peanut butter</td></tr>
+            <tr><td>Monday</td><td>Boiled egg & herbal tea</td></tr>
+            <tr><td>Tuesday</td><td>Handful of almonds</td></tr>
+            <tr><td>Wednesday</td><td>Low-fat yogurt</td></tr>
+            <tr><td>Thursday</td><td>Warm milk with cinnamon</td></tr>
+            <tr><td>Friday</td><td>Apple slices with almond butter</td></tr>
+            <tr><td>Saturday</td><td>Cottage cheese with berries</td></tr>
+        </tbody>
+    </table>
+`;
+
